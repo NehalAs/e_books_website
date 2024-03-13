@@ -1,114 +1,122 @@
+import 'package:e_books_website/modules/register/register_screen.dart';
+import 'package:e_books_website/modules/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-   LoginScreen({super.key});
-  var emailController=TextEditingController();
+import '../shared/widgets/custom_text_field.dart';
 
-  var passwordController=TextEditingController();
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+  var emailController = TextEditingController();
+
+  var passwordController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
 
-  bool isPassword=true;
+  bool isPassword = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+            child: Container(
+              padding: const EdgeInsets.all(40.0),
+              width: 500,
+              height: 500,
+              decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(15)
+              ),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment:  MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-
-                  ),
-                  const SizedBox(
-                    height: 40.0,
-                  ),
-                  defaultFormField(
-                    controller: emailController,
-                    type: TextInputType.emailAddress,
-                    onSubmitt: (value){print(value);},
-                    onChange: (value){print(value);},
-                    label: 'Email',
-                    prefix: const Icon(Icons.email),
-                    validate: (value) {
-                      if(value.isEmpty){
-                        return 'password must not be empty';
-
-                      }
-                      return null;
-                    },
-
-                  ),
-                  const SizedBox(
-                    height: 15.0,
-                  ),
-                  defaultFormField(
-                    controller: passwordController,
-                    type: TextInputType.visiblePassword,
-                    obsecure: isPassword,
-                    validate: (value){
-
-                      if(value.isEmpty)
-                      {
-                        return 'password must not be empty';
-                      }
-                      return null;
-                    },
-
-                    label: 'Password',
-                    prefix: const Icon(Icons.lock),
-                    suffix: IconButton(
-                      onPressed: (){
-                        // setState(() {
-                        //   isPassword=!isPassword;
-                        // });
-
+                    const SizedBox(
+                      height: 40.0,
+                    ),
+                    CustomTextField(
+                      controller: emailController,
+                      type: TextInputType.emailAddress,
+                      onSubmitt: (value) {
+                        print(value);
                       },
-                      icon:isPassword?const Icon(Icons.visibility):const Icon(Icons.visibility_off),
+                      onChange: (value) {
+                        print(value);
+                      },
+                      label: 'Email',
+                      prefix: const Icon(Icons.email),
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'password must not be empty';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-
-                  defaultButton(
-                    text: 'login',
-                    function: (){
-
-                      if(formKey.currentState!.validate()){
-
-                        print(emailController.text);
-                        print(passwordController.text);
-                      }
-
-                    },
-                  ),
-
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Don\'t have an accunt ?'),
-                      TextButton(onPressed: (){}, child: const Text('Rigister now'),),
-                    ],
-                  ),
-
-                ],
-
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    CustomTextField(
+                      controller: passwordController,
+                      type: TextInputType.visiblePassword,
+                      obsecure: isPassword,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'password must not be empty';
+                        }
+                        return null;
+                      },
+                      label: 'Password',
+                      prefix: const Icon(Icons.lock),
+                      suffix: IconButton(
+                        onPressed: () {
+                          // setState(() {
+                          //   isPassword=!isPassword;
+                          // });
+                        },
+                        icon: isPassword
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    CustomButton(
+                      text: 'login',
+                      function: () {
+                        if (formKey.currentState!.validate()) {
+                          print(emailController.text);
+                          print(passwordController.text);
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Don\'t have an accunt ?'),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
+                          },
+                          child: const Text('Rigister now',style: TextStyle(color: Colors.blue)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -117,64 +125,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-   Widget defaultFormField (
-   {
-   required TextEditingController controller,
-   required   TextInputType type  ,
-   Function? onChange(value)?,
-   Function? onSubmitt(value)?,
-   Function ()?onTap,
-   required String? validate(value),
-   required String label,
-   required Icon prefix,
-   IconButton? suffix,
-   bool outLineBorder = true,
-   bool obsecure = false,
-}
-) =>
-TextFormField(
-controller: controller ,
-keyboardType: type,
-onFieldSubmitted: onSubmitt,
-onChanged:  onChange,
-onTap:onTap,
-validator: validate,
-obscureText: obsecure,
-decoration: InputDecoration(
-labelText: label ,
-prefixIcon: prefix,
-suffixIcon:suffix ,
-border: outLineBorder?const OutlineInputBorder():null,
-),
-);
-Widget defaultButton(
-{
-double width =double.infinity,
-Color background = Colors.blue,
-required   Function ()function,
-bool isUppercase = true,
-required String text,
-double radius= 0.0,
 
 
-})=>
-Container(
-width: width,
-height: 40.0,
-decoration: BoxDecoration(
-borderRadius: BorderRadius.circular(radius),
-color: background,
-),
-child: MaterialButton(
-onPressed:function,
-child: Text(
-isUppercase? text.toUpperCase():text,
-style: const TextStyle(
-color: Colors.white,
-fontSize: 15.0,
-),
-) ,
 
-),
-);
 }
