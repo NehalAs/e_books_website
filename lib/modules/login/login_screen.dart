@@ -1,3 +1,4 @@
+import 'package:e_books_website/modules/home/home_screen.dart';
 import 'package:e_books_website/modules/register/register_screen.dart';
 import 'package:e_books_website/modules/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +98,7 @@ class LoginScreen extends StatelessWidget {
                         if (formKey.currentState!.validate()) {
                           print(emailController.text);
                           print(passwordController.text);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>const HomeScreen()));
                         }
                       },
                     ),
