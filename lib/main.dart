@@ -1,7 +1,11 @@
+import 'package:e_books_website/modules/home/views/home_screen.dart';
 import 'package:e_books_website/modules/login/views/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'modules/home/cubit/home_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding();
@@ -28,9 +32,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:LoginScreen(),
+    return BlocProvider(
+        create: (context) => HomeCubit(),
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home:HomeScreen(),
+        )
+
     );
   }
 }

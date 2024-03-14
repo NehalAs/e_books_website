@@ -28,6 +28,7 @@ import 'home_states.dart';
 
    void addBook(
        {
+         required String name,
          required String cover,
          required String category,
          required String authorName,
@@ -36,6 +37,7 @@ import 'home_states.dart';
    {
      emit(AddBookLoadingState());
      var model= BookModel(
+       name: name,
        cover: cover,
        category: category,
        authorName: authorName,

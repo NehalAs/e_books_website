@@ -1,7 +1,7 @@
 class BookModel {
   String? cover;
   String? pdf;
-  // String? id;
+  String? name;
   String? category;
   String? authorName;
   String? voice;
@@ -9,7 +9,7 @@ class BookModel {
   BookModel(
       {this.cover,
         this.pdf,
-        // this.id,
+        this.name,
         this.category,
         this.authorName,
         this.voice});
@@ -17,7 +17,7 @@ class BookModel {
   BookModel.fromJson(Map<String, dynamic> json) {
     cover = json['cover'];
     pdf = json['pdf'];
-    // id = json['Id'];
+    name = json['name'];
     category = json['category'];
     authorName = json['authorName'];
     voice = json['voice'];
@@ -27,7 +27,7 @@ class BookModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['cover'] = this.cover;
     data['pdf'] = this.pdf;
-    // data['Id'] = this.id;
+    data['name'] = this.name;
     data['category'] = this.category;
     data['authorName'] = this.authorName;
     data['voice'] = this.voice;
