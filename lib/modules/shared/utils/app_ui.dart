@@ -51,4 +51,7 @@ class AppUI {
   static Color sliderColor_2 = const Color(0xFFE1DCDB); //.withOpacity(0.15);
   static Color translationMenuColor = const Color(0xFF5d4629); //.withOpacity(0.15);
   static Color translationMenuDividerColor = const Color(0x7FE1C361); //.withOpacity(0.15);
+  static Color buttonColor =  Color(0xff2E4053);
+  static Color textButton =  Color(0xff21618C);
+
 }

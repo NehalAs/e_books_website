@@ -1,5 +1,7 @@
+import 'package:e_books_website/modules/activiation_requests/cubit/requests_cubit.dart';
 import 'package:e_books_website/modules/register/cubit/register_cubit.dart';
 import 'package:e_books_website/modules/register/cubit/register_state.dart';
+import 'package:e_books_website/modules/shared/utils/app_util.dart';
 import 'package:e_books_website/modules/shared/widgets/custom_button.dart';
 import 'package:e_books_website/modules/shared/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,13 @@ class RegisterScreen extends StatelessWidget {
           if(state is CreateUserSuccessState)
             {
               Navigator.pop(context);
+              RequestsCubit.get(context).sendRequest(
+                senderId: state.uId,
+                senderMail: emailController.text, receiverId: 'vGTzxfMsmaUVSIe0Z1tZSfv9mmm2', dateTime: DateTime.now().toString());
+            }
+          if(state is RegisterErrorState)
+            {
+              AppUtil.showToast(message: state.error);
             }
         },
         builder: (context, state) {
@@ -30,94 +39,86 @@ class RegisterScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(40.0),
-                    width: 500,
-                    //height: 500,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Register',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35.0,
-                            ),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Register',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35.0,
                           ),
-                          const SizedBox(
-                            height: 40.0,
+                        ),
+                        const SizedBox(
+                          height: 40.0,
+                        ),
+                        CustomTextField(
+                          controller: nameController,
+                          type: TextInputType.name,
+                          validate: (value) {
+                            if (value!.isEmpty) {
+                              return 'Name must not be empty';
+                            }
+                          },
+                          label: 'Name',
+                          prefix: const Icon(Icons.person),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        CustomTextField(
+                          controller: emailController,
+                          type: TextInputType.emailAddress,
+                          validate: (value) {
+                            if (value!.isEmpty) {
+                              return 'Email adress must not be empty';
+                            }
+                          },
+                          label: 'Email',
+                          prefix: const Icon(Icons.email_outlined),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        CustomTextField(
+                          controller: passwordController,
+                          type: TextInputType.visiblePassword,
+                          obsecure: registerCubit.isPassword,
+                          validate: (value) {
+                            if (value!.isEmpty) {
+                              return 'Password is too short';
+                            }
+                          },
+                          onSubmitt: (value) {},
+                          label: 'Password',
+                          prefix: const Icon(Icons.lock_outline),
+                          suffix: IconButton(
+                              onPressed: () {
+                                registerCubit.changePasswordVisibility();
+                              },
+                            icon: Icon( registerCubit.suffixIcon),
                           ),
-                          CustomTextField(
-                            controller: nameController,
-                            type: TextInputType.name,
-                            validate: (value) {
-                              if (value!.isEmpty) {
-                                return 'Name must not be empty';
-                              }
-                            },
-                            label: 'Name',
-                            prefix: const Icon(Icons.person),
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextField(
-                            controller: emailController,
-                            type: TextInputType.emailAddress,
-                            validate: (value) {
-                              if (value!.isEmpty) {
-                                return 'Email adress must not be empty';
-                              }
-                            },
-                            label: 'Email',
-                            prefix: const Icon(Icons.email_outlined),
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextField(
-                            controller: passwordController,
-                            type: TextInputType.visiblePassword,
-                            obsecure: registerCubit.isPassword,
-                            validate: (value) {
-                              if (value!.isEmpty) {
-                                return 'Password is too short';
-                              }
-                            },
-                            onSubmitt: (value) {},
-                            label: 'Password',
-                            prefix: const Icon(Icons.lock_outline),
-                            suffix: IconButton(
-                                onPressed: () {
-                                  registerCubit.changePasswordVisibility();
-                                },
-                              icon: Icon( registerCubit.suffixIcon),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomButton(
-                            function: () {
-                              if (formKey.currentState!.validate()) {
-                                registerCubit.userRegister(
-                                    email: emailController.text,
-                                    name: nameController.text,
-                                    password: passwordController.text,
-                                );
-                              }
-                            },
-                            text: 'register',
-                            isUppercase: true,
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        CustomButton(
+                          function: () {
+                            if (formKey.currentState!.validate()) {
+                              registerCubit.userRegister(
+                                  email: emailController.text,
+                                  name: nameController.text,
+                                  password: passwordController.text,
+                              );
+                            }
+                          },
+                          text: 'register',
+                          isUppercase: true,
+                        ),
+                      ],
                     ),
                   ),
                 ),

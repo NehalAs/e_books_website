@@ -37,7 +37,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
     }).catchError((error){
       print(error.toString());
-      emit(RegisterErrorState());
+      emit(RegisterErrorState(error.toString()));
     });
 
   }
@@ -57,10 +57,10 @@ class RegisterCubit extends Cubit<RegisterState> {
         userType:"user",
     );
     FirebaseFirestore.instance.collection('users').doc(uId).set(model.toJson()).then((value){
-      emit(CreateUserSuccessState());
+      emit(CreateUserSuccessState(uId));
     }).catchError((error){
       print(error.toString());
-      emit(CreateUserErrorState());
+      emit(CreateUserErrorState(error.toString()));
     });
   }
 

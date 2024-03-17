@@ -5,6 +5,7 @@ class BookModel {
   String? category;
   String? authorName;
   String? voice;
+  String? bookId;
 
   BookModel(
       {this.cover,
@@ -12,7 +13,9 @@ class BookModel {
         this.name,
         this.category,
         this.authorName,
-        this.voice});
+        this.voice,
+        this.bookId,
+      });
 
   BookModel.fromJson(Map<String, dynamic> json) {
     cover = json['cover'];
@@ -21,6 +24,7 @@ class BookModel {
     category = json['category'];
     authorName = json['authorName'];
     voice = json['voice'];
+    bookId = json['bookId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +35,7 @@ class BookModel {
     data['category'] = this.category;
     data['authorName'] = this.authorName;
     data['voice'] = this.voice;
+    data['bookId'] = this.bookId;
     return data;
   }
 }

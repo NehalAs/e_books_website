@@ -1,3 +1,4 @@
+import 'package:e_books_website/modules/shared/utils/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -6,12 +7,12 @@ class CustomButton extends StatelessWidget {
       required this.function,
       required this.text,
       this.width = 400,
-      this.background = Colors.blue,
+      this.background,
       this.isUppercase = true,
       this.radius = 0.0});
 
   double width;
-  Color background;
+  Color? background;
   Function() function;
   bool isUppercase;
   String text;
@@ -23,7 +24,7 @@ class CustomButton extends StatelessWidget {
       height: 40.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
-        color: background,
+        color:background?? AppUI.buttonColor,
       ),
       child: MaterialButton(
         onPressed: function,
