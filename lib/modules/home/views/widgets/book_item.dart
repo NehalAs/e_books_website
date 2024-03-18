@@ -1,4 +1,5 @@
 import 'package:e_books_website/modules/home/cubit/home_cubit.dart';
+import 'package:e_books_website/modules/home/views/add_book_screen.dart';
 import 'package:e_books_website/modules/home/views/pdf_viewer_screen.dart';
 import 'package:e_books_website/modules/shared/constants.dart';
 import 'package:e_books_website/modules/shared/utils/app_ui.dart';
@@ -138,9 +139,32 @@ class BookListViewItem extends StatelessWidget {
                               )),
                             ),)),
                     ),
-                    const SizedBox(width: 20,),
                     if(HomeCubit.get(context).userModel!.userType=='admin')...[
-                      const SizedBox(width: 20,),
+                      const SizedBox(height: 20,),
+                      Align(
+                        alignment:Alignment.bottomRight,
+                        child: InkWell(
+                            onTap: () async {
+                              AppUtil.mainNavigator(context, AddBookScreen(updateBook: true,bookToEdit: model,));
+                            },
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color:  AppUI.buttonColor,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Center(child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Edit ',style: Styles.textStyle14.copyWith(color: Colors.white,),),
+                                    const Icon(Icons.edit,color: Colors.white,size: 15),
+                                  ],
+                                )),
+                              ),)),
+                      ),
+                      const SizedBox(height: 20,),
                       Align(
                       alignment:Alignment.bottomRight,
 
@@ -164,7 +188,10 @@ class BookListViewItem extends StatelessWidget {
                                 ],
                               )),
                             ),)),
-                    ),],
+                    ),
+                      const SizedBox(height: 20,),
+
+                    ],
                   ],
                 )),
           ],

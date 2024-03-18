@@ -208,4 +208,10 @@ class HomeCubit extends Cubit<HomeStates> {
     FirebaseFirestore.instance.collection('books').doc(bookId).delete();
     emit(DeleteBookState());
   }
+  void editBook({required BookModel bookData}){
+    FirebaseFirestore.instance.collection('books').doc(bookData.bookId).update(
+      bookData.toJson()
+    );
+    emit(EditBookState());
+  }
 }

@@ -20,3 +20,4 @@ class GetUserDataErrorState extends HomeStates {
 class UserUpdateErrorState extends HomeStates {}
 
 class DeleteBookState extends HomeStates {}
+class EditBookState extends HomeStates {}

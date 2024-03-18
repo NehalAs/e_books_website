@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_books_website/modules/home/cubit/home_cubit.dart';
 import 'package:e_books_website/modules/home/cubit/home_states.dart';
+import 'package:e_books_website/modules/home/models/book_model.dart';
 import 'package:e_books_website/modules/shared/utils/app_ui.dart';
 import 'package:e_books_website/modules/shared/utils/app_util.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +12,20 @@ import '../../shared/widgets/custom_button.dart';
 import '../../shared/widgets/custom_text_field.dart';
 
 class AddBookScreen extends StatelessWidget {
-  AddBookScreen({super.key});
+  AddBookScreen({super.key,this.updateBook=false,this.bookToEdit});
   var authorNameController = TextEditingController();
   var categoryController = TextEditingController();
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+
+  bool updateBook;
+  BookModel? bookToEdit;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
-        if(state is AddBookSuccessState)
+        if(state is AddBookSuccessState || state is EditBookState)
           {
             Navigator.pop(context);
           }
@@ -40,9 +44,9 @@ class AddBookScreen extends StatelessWidget {
                   children: [
                     if(State is AddBookLoadingState)
                       const LinearProgressIndicator(),
-                    const Text(
-                      'Add book',
-                      style: TextStyle(
+                     Text(
+                      updateBook?'Edit Book':'Add book',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 35.0,
                       ),
@@ -131,15 +135,30 @@ class AddBookScreen extends StatelessWidget {
                          function: () {
                            var uuid = const Uuid();
                            var bookId=uuid.v4();
-                           if (formKey.currentState!.validate()) {
-                             homeCubit.addBook(
-                               name: nameController.text,
-                               cover: homeCubit.coverImage!,
-                               category: categoryController.text,
-                               authorName: authorNameController.text,
-                               pdf: homeCubit.pdfUrl!,
-                               voice: homeCubit.audioUrl!,
-                               bookId: bookId
+                           if (!updateBook) {
+                             if (formKey.currentState!.validate()) {
+                               homeCubit.addBook(
+                                 name: nameController.text,
+                                 cover: homeCubit.coverImage!,
+                                 category: categoryController.text,
+                                 authorName: authorNameController.text,
+                                 pdf: homeCubit.pdfUrl!,
+                                 voice: homeCubit.audioUrl!,
+                                 bookId: bookId
+                               );
+                             }
+                           }
+                           else{
+                             homeCubit.editBook(
+                                 bookData: BookModel(
+                                     name: nameController.text==''?bookToEdit!.name:nameController.text,
+                                     cover: homeCubit.coverImage ?? bookToEdit!.cover,
+                                     category: categoryController.text==''?bookToEdit!.category:categoryController.text,
+                                     authorName: authorNameController.text ==''?bookToEdit!.authorName:authorNameController.text,
+                                     pdf: homeCubit.pdfUrl??bookToEdit!.pdf,
+                                     voice: homeCubit.audioUrl??bookToEdit!.voice,
+                                     bookId: bookToEdit!.bookId,
+                                 ),
                              );
                            }
                          },
